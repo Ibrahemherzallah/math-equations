@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محرر المعادلات الرياضية - MathLive + TinyMCE</title>
+
+    <!-- External Libraries -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/tinymce@5/tinymce.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/mathlive/dist/mathlive-static.css">
+    <script src="https://unpkg.com/mathlive"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Scheherazade+New&display=swap" rel="stylesheet">
+
+    <!-- MathJax Configuration -->
+    <script>
+        window.MathJax = {
+            loader: { load: ['[tex]/mhchem'] },
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']],
+                packages: { '[+]': ['mhchem'] },
+            },
+            options: { menuOptions: { settings: { locale: 'ar' } } },
+            chtml: { displayAlign: 'right', scale: 1.1 },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/locale/ar.js"></script>
+
+    <style>
+        /* ===== Base Styles ===== */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 30px 0;
+        }
+
+        .container {
+            max-width: 900px;
+        }
+
+        /* ===== Card Styles ===== */
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: none;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px 15px 0 0 !important;
+            padding: 20px;
+            border: none;
+        }
+
+        .card-title {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        /* ===== MathField Styles ===== */
+        math-field {
+            direction: rtl;
+            text-align: right;
+            font-size: 18px;
+            padding: 12px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            width: 100%;
+            min-height: 60px;
+            background: white;
+            position: relative;
+            z-index: 10050 !important;
+        }
+
+        math-field:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+            outline: none;
+        }
+
+        /* ===== MathJax & Preview Styles ===== */
+        mjx-container {
+            direction: rtl !important;
+            text-align: right !important;
+            font-family: 'Amiri', 'Scheherazade New', 'Noto Naskh Arabic', serif !important;
+            font-size: 1.1em;
+        }
+
+        .math-preview,
+        .result-display {
+            direction: rtl !important;
+            text-align: right !important;
+        }
+
+        mjx-math,
+        mjx-msubsup,
+        mjx-msub,
+        mjx-texatom,
+        mjx-munderover,
+        mjx-mover,
+        mjx-script,
+        mjx-mtr {
+            display: inline-block;
+            transform: scaleX(-1);
+        }
+
+        mjx-mtr mjx-mtd,
+        mjx-mtr mjx-mtd mjx-mn,
+        mjx-mtr mjx-mtd mjx-mi {
+            transform: scaleX(1);
+        }
+
+        mjx-math mjx-surd,
+        mjx-math mjx-mi,
+        mjx-math mjx-mn,
+        mjx-math mjx-mo,
+        mjx-math mjx-script mjx-c,
+        mjx-box mjx-msub mjx-script mjx-mn mjx-c,
+        mjx-script mjx-texatom mjx-msqrt mjx-sqrt mjx-box {
+            display: inline-block;
+            transform: scaleX(-1);
+        }
+
+        mjx-math mjx-msubsup mjx-texatom,
+        mjx-math mjx-msubsup mjx-mn mjx-c,
+        mjx-math mjx-munderover mjx-texatom,
+        mjx-math mjx-munderover mjx-mn mjx-c,
+        mjx-math mjx-script mjx-texatom mjx-msqrt mjx-surd,
+        mjx-math mjx-script mjx-texatom mjx-msqrt mjx-box mjx-mn,
+        mjx-math mjx-script mjx-texatom mjx-mn mjx-c {
+            display: inline-block;
+            transform: none !important;
+        }
+
+        mjx-math mjx-script mjx-script mjx-mn,
+        mjx-math mjx-mrow > mjx-mo {
+          transform: scaleX(1);
+        }
+
+        mjx-itable mjx-mtr mjx-mtd mjx-tstrut {
+          display: none;
+        }
+
+        mjx-itable mjx-mtr mjx-mtd {
+          width: 3rem;
+        }
+
+        mjx-mfrac mjx-frac mjx-den {
+          font-size: 2rem;
+        } 
+
+        mjx-mfrac mjx-frac mjx-num {
+          padding-bottom: 0.2em !important;
+        }
+        .arrow-btn {
+          position: relative;
+          font-size: 18px;
+          padding: 8px 16px;
+        }
+
+        /* ===== Preview & Result Display ===== */
+        .math-preview {
+            padding: 20px;
+            background: #f8f9fa;
+            border: 2px dashed #dee2e6;
+            border-radius: 8px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px 0;
+        }
+
+        .result-display {
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            min-height: 100px;
+            margin-top: 20px;
+            line-height: 1.8;
+        }
+
+        /* ===== Math Content Badge ===== */
+        .math-content {
+            display: inline-block;
+            margin: 0 8px;
+            padding: 6px 12px;
+            background: linear-gradient(135deg, #f0f4ff 0%, #e8f0fe 100%);
+            border: 1px solid #c7d7ff;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            direction: ltr !important;
+            white-space: nowrap;
+            vertical-align: middle;
+        }
+
+        .math-content mjx-container {
+            direction: ltr !important;
+            text-align: left !important;
+        }
+
+        .math-content:hover {
+            background: linear-gradient(135deg, #e1ecff 0%, #d4e4fe 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* ===== Button Styles ===== */
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            font-weight: 600;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #5568d3 0%, #653a8a 100%);
+            border: none;
+        }
+
+        .btn-primary:focus,
+        .btn-primary.focus {
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.5);
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+            border: none;
+            font-weight: 600;
+        }
+
+        .btn-info:hover {
+            background: linear-gradient(135deg, #0f8fa6 0%, #0a5a67 100%);
+        }
+
+        /* ===== Example Badges ===== */
+        .badge-example {
+            font-size: 0.85rem;
+            padding: 5px 10px;
+            margin: 3px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .badge-example:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* ===== Modal Styles ===== */
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+        }
+
+        .modal-header .close {
+            color: white;
+            opacity: 0.8;
+        }
+
+        .modal-header .close:hover {
+            opacity: 1;
+        }
+
+        .modal-body {
+            max-height: 70vh;
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+
+        /* ===== Test Table Styles ===== */
+        .test-table {
+            font-size: 0.9rem;
+        }
+
+        .test-table code {
+            direction: ltr;
+            word-break: break-all;
+        }
+
+        .test-result-pass {
+            background-color: #d4edda !important;
+        }
+
+        .test-result-fail {
+            background-color: #fff3cd !important;
+        }
+
+        /* ===== Keyboard Overlay ===== */
+        .ML__keyboard {
+            z-index: 9999 !important;
+            position: fixed !important;
+        }
+
+        .mq-keyboard,
+        .mq-keyboard-frame,
+        .mq-popover {
+            z-index: 10051 !important;
+            position: fixed !important;
+        }
+        .ML__placeholder {
+            border: 1px solid #aaa;
+            padding: 2px 6px;
+            margin: 0 2px;
+            border-radius: 4px;
+        }
+        /* ===== Responsive ===== */
+        @media (max-width: 768px) {
+            .card-header h3 {
+                font-size: 1.5rem;
+            }
+
+            .btn-lg {
+                font-size: 1rem;
+                padding: 0.75rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Main Editor Card -->
+        <div class="card">
+            <div class="card-header text-center">
+                <h3 class="mb-0">
+                    <i class="fas fa-calculator"></i> محرر المعادلات الرياضية
+                </h3>
+                <p class="mb-0 mt-2" style="font-size: 0.95rem;">MathLive + TinyMCE مع دعم العربية</p>
+            </div>
+
+            <div class="card-body">
+                <!-- Text Editor -->
+                <div class="form-group">
+                    <label class="font-weight-bold"><i class="fas fa-edit"></i> محرر النصوص:</label>
+                    <textarea id="mainEditor" rows="10"></textarea>
+                </div>
+
+                <!-- Quick Examples -->
+                <div class="form-group">
+                    <label class="font-weight-bold"><i class="fas fa-lightbulb"></i> أمثلة سريعة (انقر
+                        للاستخدام):</label>
+                    <div>
+                        <span class="badge badge-info badge-example example-latex" data-latex="\frac{x^2 + y^2}{2}">كسر:
+                            \frac{x^2 + y^2}{2}</span>
+                        <span class="badge badge-success badge-example example-latex" data-latex="\sqrt{a^2 + b^2}">جذر:
+                            \sqrt{a^2 + b^2}</span>
+                        <span class="badge badge-warning badge-example example-latex"
+                            data-latex="\sum_{i=1}^{n} x_i">مجموع: \sum_{i=1}^{n} x_i</span>
+                        <span class="badge badge-danger badge-example example-latex"
+                            data-latex="\int_{0}^{\infty} e^{-x} dx">تكامل: \int_{0}^{\infty} e^{-x} dx</span>
+                        <span class="badge badge-primary badge-example example-latex"
+                            data-latex="x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}">معادلة تربيعية</span>
+                        <span class="badge badge-secondary badge-example example-latex"
+                            data-latex="\lim_{x \to 0} \frac{\sin x}{x}">نهاية: \lim_{x \to 0} \frac{\sin x}{x}</span>
+                    </div>
+                </div>
+
+                <!-- Result Display -->
+                <div class="form-group">
+                    <label class="font-weight-bold"><i class="fas fa-eye"></i> النتيجة النهائية:</label>
+                    <div id="finalResult" class="result-display">
+                        <p class="text-muted">المحتوى سيظهر هنا...</p>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="text-center mt-4">
+                    <button class="btn btn-primary btn-lg" id="showResult"><i class="fas fa-check-circle"></i> عرض
+                        النتيجة</button>
+                    <button class="btn btn-secondary btn-lg" id="clearEditor" style="margin-right: 10px;"><i
+                            class="fas fa-trash"></i> مسح الكل</button>
+                    <button class="btn btn-info btn-lg" id="testFunctions" style="margin-right: 10px;"><i
+                            class="fas fa-vial"></i> اختبار الدوال</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info Card -->
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-info-circle"></i> كيفية الاستخدام:</h5>
+                <ol class="text-right" dir="rtl">
+                    <li>انقر على زر "معادلة رياضية" في شريط الأدوات</li>
+                    <li>اكتب المعادلة في محرر MathLive</li>
+                    <li>شاهد المعاينة المباشرة</li>
+                    <li>انقر "إدراج المعادلة" لإضافتها</li>
+                    <li>أو استخدم الأمثلة السريعة أعلاه</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <!-- Math Editor Modal -->
+    <div class="modal fade" id="mathEditorModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-calculator"></i> محرر المعادلات الرياضية</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
+                </div>
+
+                <div class="modal-body" style="direction: rtl;">
+                    <div class="form-group">
+                        <label class="font-weight-bold">أدخل المعادلة:</label>
+                        <math-field id="mathField"></math-field>
+                    </div>
+
+                    <!-- Arabic Numbers -->
+                    <div class="form-group text-center mt-3">
+                        <label class="font-weight-bold d-block mb-2">الأرقام العربية:</label>
+                        <div id="arabicNumbers" class="d-flex justify-content-center flex-wrap gap-2">
+                            <button type="button" class="btn btn-light m-1 num-btn">٠</button>
+                            <button type="button" class="btn btn-light m-1 num-btn">١</button>
+                            <button type="button" class="btn btn-light m-1 num-btn">٢</button>
+                            <button type="button" class="btn btn-light m-1 num-btn">٣</button>
+                            <button type="button" class="btn btn-light m-1 num-btn">٤</button>
+                            <button type="button" class="btn btn-light m-1 num-btn">٥</button>
+                            <button type="button" class="btn btn-light m-1 num-btn">٦</button>
+                            <button type="button" class="btn btn-light m-1 num-btn">٧</button>
+                            <button type="button" class="btn btn-light m-1 num-btn">٨</button>
+                            <button type="button" class="btn btn-light m-1 num-btn">٩</button>
+                            <button type="button" class="btn btn-light m-1 arrow-btn">←</button>
+                        </div>
+                        <div>
+                            <button type="button" class="btn m-1 custom-math-btn flex-column"
+                                data-insert="{\placeholder{}} {\placeholder{}}">
+                                <img src="images/screenshot2.png">
+                            </button>
+                            <button type="button" class="btn  m-1 custom-math-btn flex-column"
+                                data-insert="{\placeholder{} \atop \placeholder{}}">
+                                <img src="images/screenshot4.png">
+                            </button>
+                            <button type="button" class="btn m-1 custom-math-btn flex-column"
+                              data-insert="\begin{matrix}\placeholder{} \\ + \placeholder{} \\ \hline \\ \placeholder{}\end{matrix}">
+                              <img src="images/image.png">
+    
+                            </button>
+
+                            <!-- Long division -->
+                            <button type="button" class="btn m-1 custom-math-btn"
+                                    data-insert="\longdiv{\placeholder{}}{\placeholder{}}">
+                                  <img src="images/longDiv.png">
+                            </button>
+                            <button type="button" class="btn m-1 custom-math-btn"
+                                    data-insert="\longdiv{\placeholder{}}{\placeholder{}}">
+                                  <img src="images/screenshot1.png">
+                            </button>
+
+                                                        <button type="button" class="btn m-1 custom-math-btn"
+                                    data-insert="\longdiv{\placeholder{}}{\placeholder{}}">
+                                  <img src="images/screenshot3.png">
+                            </button>
+
+                        </div>
+                        
+
+                    </div>
+
+                    <div class="form-group">
+                        <label class="font-weight-bold">معاينة:</label>
+                        <div class="math-preview" id="mathPreview"><span class="text-muted">المعاينة ستظهر هنا...</span>
+                        </div>
+                    </div>
+
+                    <small class="text-muted"><i class="fas fa-info-circle"></i> استخدم LaTeX لكتابة المعادلات
+                        الرياضية</small>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-primary" id="insertMath"><i class="fas fa-plus-circle"></i>
+                        إدراج المعادلة</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery & Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // ========================================
+        // MATH EQUATION EDITOR - CLEAN VERSION
+        // ========================================
+
+        // ===== Constants & Configuration =====
+        const CONFIG = {
+            MATH_FUNCTIONS: ['sin', 'cos', 'tan', 'cot', 'sec', 'csc', 'log', 'ln', 'lim'],
+            ARABIC_FUNCTIONS: ['جا', 'جتا', 'ظا', 'ظتا', 'قا', 'قتا', 'لو', 'لن', 'نها'],
+            TRANSLATIONS: {
+                'sin': 'جا',
+                'cos': 'جتا',
+                'tan': 'ظا',
+                'log': 'لو',
+                'ln': 'لن',
+                'sec': 'قا',
+                'csc': 'قتا',
+                'cot': 'ظتا',
+                'lim': 'نها',
+            }
+        };
+
+        // ===== Global State =====
+        let appState = {
+            mathFieldInstance: null,
+            currentEditor: null
+        };
+
+        // ========================================
+        // INITIALIZATION FUNCTIONS
+        // ========================================
+
+        /**
+         * Initialize TinyMCE Editor
+         */
+        function initTinyMCE() {
+            tinymce.init({
+                selector: '#mainEditor',
+                height: 400,
+                language: 'ar',
+                directionality: 'rtl',
+                plugins: 'code lists link',
+                toolbar: 'undo redo | bold italic | mathFormula | bullist numlist | link | code',
+                menubar: false,
+                setup: (editor) => {
+                    editor.ui.registry.addButton('mathFormula', {
+                        text: 'معادلة رياضية',
+                        icon: 'gamma',
+                        onAction: () => {
+                            appState.currentEditor = editor;
+                            $('#mathEditorModal').modal('show');
+                        }
+                    });
+                },
+                content_style: `
+                    body { 
+                        direction: rtl; 
+                        text-align: right; 
+                        font-family: Arial, sans-serif;
+                        font-size: 16px;
+                        padding: 10px;
+                    }
+                    .math-content {
+                        display: inline-block;
+                        margin: 0 8px;
+                        padding: 4px 10px;
+                        background: linear-gradient(135deg, #f0f4ff 0%, #e8f0fe 100%);
+                        border: 1px solid #c7d7ff;
+                        border-radius: 6px;
+                    }
+                `
+            });
+        }
+
+        /**
+         * Initialize MathLive Field
+         */
+        function initMathField() {
+            appState.mathFieldInstance = document.getElementById('mathField');
+
+            if (appState.mathFieldInstance) {
+                appState.mathFieldInstance.addEventListener('input', (e) => {
+                    updateMathPreview(e.target.value);
+                });
+
+                appState.mathFieldInstance.setOptions({
+                    virtualKeyboardMode: 'manual',
+                    smartMode: true,
+                    smartFence: true,
+                });
+            }
+        }
+
+        // ========================================
+        // TRANSLATION & CONVERSION FUNCTIONS
+        // ========================================
+
+        /**
+         * Translate Math Symbols from English to Arabic
+         * @param {string} latex - LaTeX expression
+         * @returns {string} Translated expression
+         */
+        function translateMathSymbols(latex) {
+            if (!latex) return latex;
+
+            let result = latex;
+
+            // Handle log_10 and ln_10 first
+            result = result.replace(/\blog_(\d+)\b/g, 'لو_{$1}');
+            result = result.replace(/\blog_\{(\d+)\}/g, 'لو_{$1}');
+            result = result.replace(/\bln_(\d+)\b/g, 'لن_{$1}');
+            result = result.replace(/\bln_\{(\d+)\}/g, 'لن_{$1}');
+
+            // Translate other functions
+            for (const [eng, ar] of Object.entries(CONFIG.TRANSLATIONS)) {
+                if (!['log', 'ln'].includes(eng)) {
+                    result = result.replace(new RegExp(`\\\\?\\b${eng}\\b`, 'g'), ar);
+                } else {
+                    result = result.replace(new RegExp(`\\\\?\\b${eng}(?!_)\\b`, 'g'), ar);
+                }
+            }
+
+            return result;
+        }
+
+        /**
+         * Add proper spacing for Arabic text with LaTeX
+         * @param {string} content - Content to format
+         * @returns {string} Formatted content
+         */
+        function addProperSpacing(content) {
+            content = content.replace(/([أ-ي])(\\[\(\[])/g, '$1 $2');
+            content = content.replace(/(\\[\)\]])(\s?)([أ-ي])/g, '$1 $3');
+            return content;
+        }
+
+        /**
+         * Update Math Preview with MathJax rendering
+         * @param {string} latex - LaTeX expression
+         */
+        function updateMathPreview(latex) {
+            const preview = document.getElementById('mathPreview');
+            if (latex) {
+                const translated = translateMathSymbols(latex);
+                preview.innerHTML = `\\[${translated}\\]`;
+                if (window.MathJax) {
+                    MathJax.typesetPromise([preview]).catch(err => console.log(err));
+                }
+            } else {
+                preview.innerHTML = '<span class="text-muted">المعاينة ستظهر هنا...</span>';
+            }
+        }
+
+        // ========================================
+        // HELPER FUNCTIONS
+        // ========================================
+
+        /**
+         * Escape HTML special characters
+         * @param {string} text - Text to escape
+         * @returns {string} Escaped text
+         */
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        /**
+         * Reset Math Field
+         */
+        function resetMathField() {
+            if (appState.mathFieldInstance) {
+                appState.mathFieldInstance.value = '';
+            }
+            $('#mathPreview').html('<span class="text-muted">المعاينة ستظهر هنا...</span>');
+        }
+
+        /**
+         * Move Keyboard to Modal
+         */
+        function moveKeyboardToModal() {
+            const keyboardEl = document.querySelector('.ML__keyboard');
+            if (keyboardEl && this) {
+                this.appendChild(keyboardEl);
+            }
+        }
+
+        // ========================================
+        // MAIN ACTION FUNCTIONS
+        // ========================================
+
+        /**
+         * Insert Math Equation
+         */
+        function insertMath() {
+            let latex = appState.mathFieldInstance ? appState.mathFieldInstance.value.trim() : '';
+
+            // Remove extra backslashes
+            latex = latex.replace(/^\\+(sin|cos|tan|cot|sec|csc|log|ln|lim|جا|جتا|ظا|ظتا|لو|لن|نها|قا|قتا)\b/i, '$1');
+
+            if (!latex || !appState.currentEditor) return;
+
+            const mathHTML = generateMathHTML(latex);
+            if (mathHTML) {
+                appState.currentEditor.insertContent(mathHTML);
+                resetMathField();
+                $('#mathEditorModal').modal('hide');
+            }
+        }
+
+        /**
+         * Generate Math HTML based on LaTeX input
+         * @param {string} latex - LaTeX expression
+         * @returns {string} Generated HTML
+         */
+        function generateMathHTML(latex) {
+            const translations = CONFIG.TRANSLATIONS;
+            // Pattern that doesn't match log_10 or ln_10 (using negative lookahead)
+            const mathFuncPattern = /^(\\)?(sin|cos|tan|cot|sec|csc|log|ln|lim)(?!_\d)(?!_\{)(?!\})\s*\(?(.+)/i;
+
+            // ===== Handle log/ln with base FIRST: log_10 or log_10 x =====
+            const logBaseMatch = latex.match(/^\\?(log|ln|لو|لن)_\{?([^}]+)\}?(?:\s*(.+))?$/i);
+            if (logBaseMatch && logBaseMatch[2]) {
+                const funcRaw = logBaseMatch[1].toLowerCase();
+                const base = logBaseMatch[2].trim();
+                const argument = logBaseMatch[3];
+
+                // Normalize to Arabic function name
+                const arabicFunc = (funcRaw === 'ln' || funcRaw === 'لن') ? 'لن' : 'لو';
+
+                // لا نترجم الـ base إذا كانت فيها رموز خاصة
+                let translatedBase = base;
+                if (!base.includes('\\')) {
+                    translatedBase = translateMathSymbols(base);
+                }
+
+                // If there's an argument (e.g. log_10(x) or لو_10 (x) or log_10 x)
+                if (argument && argument.trim()) {
+                    let arg = argument.trim();
+                    if (arg.startsWith('(') && arg.endsWith(')')) {
+                        arg = arg.slice(1, -1).trim();
+                    }
+                    const translatedArg = translateMathSymbols(arg);
+                    return `${arabicFunc}<sub><span data-latex="\\(${escapeHtml(translatedBase)}\\)">\\(${translatedBase}\\)</span></sub> (<span data-latex="\\(${escapeHtml(translatedArg)}\\)">\\(${translatedArg}\\)</span>)`;
+                } else {
+                    // No argument: return with LaTeX delimiters in subscript
+                    return `<p>${arabicFunc}<sub><span data-latex="\\(${escapeHtml(translatedBase)}\\)">\\(${translatedBase}\\)</span></sub></p>`;
+                }
+
+            }
+
+            // ===== Handle lim with subscript FIRST: lim_{x+2} =====
+            const limMatch = latex.match(/^\\?(lim|نها)_\{?([^}]+)\}?(?:\s*(.+))?$/i);
+            if (limMatch && limMatch[2]) {
+                const base = limMatch[2].trim();
+                const argument = limMatch[3];
+                const arabicFunc = 'نها';
+
+                // لا نترجم الـ base إذا كانت فيها رموز خاصة (مثل \to، \rightarrow)
+                let translatedBase = base;
+                if (!base.includes('\\')) {
+                    translatedBase = translateMathSymbols(base);
+                }
+
+                // If there's an argument after the subscript
+                if (argument && argument.trim()) {
+                    let arg = argument.trim();
+                    if (arg.startsWith('(') && arg.endsWith(')')) {
+                        arg = arg.slice(1, -1).trim();
+                    }
+                    const translatedArg = translateMathSymbols(arg);
+                    return `${arabicFunc}<sub><span data-latex="\\(${escapeHtml(translatedBase)}\\)">\\(${translatedBase}\\)</span></sub> (<span data-latex="\\(${escapeHtml(translatedArg)}\\)">\\(${translatedArg}\\)</span>)`;
+                } else {
+                    // No argument: return with LaTeX delimiters in subscript
+                    return `<p>${arabicFunc}<sub><span data-latex="\\(${escapeHtml(translatedBase)}\\)">\\(${translatedBase}\\)</span></sub></p>`;
+                }
+            }
+
+            // ===== Check if input starts with a math function (but NOT log_10/ln_10/lim_) =====
+            const funcMatch = latex.match(mathFuncPattern);
+            if (funcMatch) {
+                const func = funcMatch[2].toLowerCase();
+                let argument = funcMatch[3].trim();
+
+                // Remove closing parenthesis if the argument was wrapped in ()
+                if (argument.startsWith('(') && argument.endsWith(')')) {
+                    argument = argument.slice(1, -1).trim();
+                }
+
+                const arabicFunc = translations[func] || func;
+
+                // If argument is empty, just return the function
+                if (!argument) {
+                    return `${arabicFunc}`;
+                }
+
+                // Translate the argument
+                const translatedArg = translateMathSymbols(argument);
+
+                // Return: Arabic function + space + wrapped argument with styling + parentheses
+                return `${arabicFunc} (<span data-latex="\\(${escapeHtml(translatedArg)}\\)">\\(${translatedArg}\\)</span>)`;
+            }
+
+            // ===== Handle other patterns with power =====
+
+            // Power with parentheses: x^2(y+1)
+            const powerParenMatch = latex.match(/^(.+?)\s*\^\s*\{?(\d+)\}?\s*\(\s*(.+)\s*\)$/);
+            if (powerParenMatch) {
+                const base = powerParenMatch[1];
+                const power = powerParenMatch[2];
+                const arg = powerParenMatch[3];
+                const translatedArg = translateMathSymbols(arg);
+                return `<span data-latex="\\(${escapeHtml(base)}\\)">\\(${base}\\)</span><sup>${power}</sup><span data-latex="\\(${escapeHtml(translatedArg)}\\)">\\(${translatedArg}\\)</span>`;
+            }
+
+            // ===== Default case: wrap entire expression in LaTeX =====
+            const translatedLatex = translateMathSymbols(latex);
+            const hasDelimiters = translatedLatex.startsWith('\\(') || translatedLatex.includes('\\(');
+
+            if (hasDelimiters) {
+                return `<span data-latex="${escapeHtml(translatedLatex)}">${translatedLatex}</span>`;
+            } else {
+                return `<span data-latex="${escapeHtml(translatedLatex)}">\\(${translatedLatex}\\)</span>`;
+            }
+        }
+
+        /**
+         * Generate HTML for logarithm with base
+         * @param {string} latex - LaTeX expression
+         * @returns {string} Generated HTML
+         */
+        function generateLogWithBase(latex) {
+            let base = '';
+            let func = '';
+
+            if (/^log_(\d+)$/.test(latex)) {
+                base = latex.match(/^log_(\d+)$/)[1];
+                func = 'لو';
+            } else if (/^log_\{(\d+)\}$/.test(latex)) {
+                base = latex.match(/^log_\{(\d+)\}$/)[1];
+                func = 'لو';
+            } else if (/^ln_(\d+)$/.test(latex)) {
+                base = latex.match(/^ln_(\d+)$/)[1];
+                func = 'لن';
+            } else if (/^ln_\{(\d+)\}$/.test(latex)) {
+                base = latex.match(/^ln_\{(\d+)\}$/)[1];
+                func = 'لن';
+            }
+
+            // النتيجة نص عادي بدون أي span أو styling - مثل جا و جتا تماماً
+            return `${func}<sub>${base}</sub>`;
+        }
+
+        /**
+         * Show Result in Preview
+         */
+        function showResult() {
+            const content = tinymce.get('mainEditor').getContent();
+            const resultDiv = document.getElementById('finalResult');
+
+            let translatedContent = content.replace(/\\\((.*?)\\\)/g, (m, p1) => `\\(${translateMathSymbols(p1)}\\)`);
+
+            translatedContent = addProperSpacing(translatedContent);
+
+            resultDiv.innerHTML = translatedContent;
+
+            if (window.MathJax) {
+                MathJax.typesetPromise([resultDiv]).catch(err => console.log(err));
+            }
+        }
+
+        /**
+         * Clear Editor
+         */
+        function clearEditor() {
+            if (confirm('هل أنت متأكد من مسح المحتوى؟')) {
+                tinymce.get('mainEditor').setContent('');
+                $('#finalResult').html('<p class="text-muted">المحتوى سيظهر هنا...</p>');
+            }
+        }
+
+        /**
+         * Test Translation Functions
+         */
+        function testTranslateSymbols() {
+            const testCases = [
+                { input: 'sin', expected: 'جا', category: 'دالة منفردة' },
+                { input: 'cos', expected: 'جتا', category: 'دالة منفردة' },
+                { input: 'tan', expected: 'ظا', category: 'دالة منفردة' },
+                { input: 'log', expected: 'لو', category: 'دالة منفردة' },
+                { input: 'lim', expected: 'نها', category: 'دالة منفردة' },
+                { input: 'sin^2', expected: 'جا', category: 'مع أس' },
+                { input: 'cos^2', expected: 'جتا', category: 'مع أس' },
+                { input: 'tan^{3}', expected: 'ظا', category: 'مع أس' },
+                { input: 'sin30', expected: 'جا30', category: 'مع رقم بدون أقواس' },
+                { input: 'cos45', expected: 'جتا45', category: 'مع رقم بدون أقواس' },
+                { input: 'tan60', expected: 'ظا60', category: 'مع رقم بدون أقواس' },
+                { input: 'cos^2(x+2)', expected: 'جتا', category: 'أس مع أقواس' },
+                { input: 'sin^2(x)', expected: 'جا', category: 'أس مع أقواس' },
+                { input: 'x^2', expected: '^', category: 'متغير مع أس' },
+                { input: 'log_10', expected: 'لو', category: 'لوغاريتم مع أساس' },
+                { input: 'lim_{x \\to 0}', expected: 'نها', category: 'نهاية مع حد' },
+            ];
+
+            let resultsHTML = '';
+            let passCount = 0;
+
+            testCases.forEach((testCase, index) => {
+                const result = evaluateTestCase(testCase.input);
+                const isCorrect = result.includes(testCase.expected);
+                if (isCorrect) passCount++;
+
+                resultsHTML += `
+                    <tr class="${isCorrect ? 'test-result-pass' : 'test-result-fail'}">
+                        <td class="text-center">${index + 1}</td>
+                        <td><code>${escapeHtml(testCase.input)}</code></td>
+                        <td><code>${escapeHtml(result)}</code></td>
+                        <td>${testCase.category}</td>
+                        <td class="text-center">
+                            <span class="badge ${isCorrect ? 'badge-success' : 'badge-warning'}">
+                                ${isCorrect ? '✓ صحيح' : '✗ خطأ'}
+                            </span>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            displayTestResults(resultsHTML, passCount, testCases.length);
+        }
+
+        /**
+         * Evaluate Test Case
+         * @param {string} input - Input expression
+         * @returns {string} Result
+         */
+        function evaluateTestCase(input) {
+            const translations = CONFIG.TRANSLATIONS;
+
+            const powerParenMatch = input.match(/^(\\)?(sin|cos|tan|cot|sec|csc|log|ln|lim)\s*\^\s*\{?(\d+)\}?\s*\(\s*(.+)\s*\)$/);
+            if (powerParenMatch) {
+                const translated = translateMathSymbols(powerParenMatch[2]);
+                return `${translated}^{${powerParenMatch[3]}}`;
+            }
+
+            if (/^(\\)?(sin|cos|tan|log|ln|sec|csc|cot|lim)\s*\^\s*\{?(-?\d+)\}?$/.test(input)) {
+                const match = input.match(/^(\\)?(sin|cos|tan|log|ln|sec|csc|cot|lim)\s*\^\s*\{?(-?\d+)\}?$/);
+                const arabicFunc = translations[match[2]] || match[2];
+                return `${arabicFunc}^${match[3]}`;
+            }
+
+            if (/^(\\)?(sin|cos|tan|log|ln|sec|csc|cot|lim)\d+$/.test(input)) {
+                const func = input.match(/^(\\)?(sin|cos|tan|log|ln|sec|csc|cot|lim)/)[2];
+                const number = input.replace(/^(\\)?(sin|cos|tan|log|ln|sec|csc|cot|lim)/, '');
+                return `${translations[func] || func}${number}`;
+            }
+
+            if (translations.hasOwnProperty(input.replace(/^\\/, ''))) {
+                return translations[input.replace(/^\\/, '')];
+            }
+
+            return translateMathSymbols(input);
+        }
+
+        /**
+         * Display Test Results Modal
+         * @param {string} resultsHTML - Results table HTML
+         * @param {number} passCount - Number of passing tests
+         * @param {number} totalCount - Total number of tests
+         */
+        function displayTestResults(resultsHTML, passCount, totalCount) {
+            const failCount = totalCount - passCount;
+            const modalHTML = `
+                <div class="modal fade" id="testResultsModal" tabindex="-1" role="dialog">
+                    <div class="modal-dialog modal-xl" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title"><i class="fas fa-vial"></i> نتائج اختبار الدوال الرياضية</h5>
+                                <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="alert alert-info">
+                                    <strong>النتيجة:</strong> ${passCount} ✓ صحيح، ${failCount} ✗ خطأ من أصل ${totalCount}
+                                </div>
+                                <table class="table table-striped test-table">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th class="text-center" style="width: 50px;">#</th>
+                                            <th>الإدخال</th>
+                                            <th>الناتج</th>
+                                            <th>الفئة</th>
+                                            <th class="text-center" style="width: 120px;">الحالة</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${resultsHTML}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            $('#testResultsModal').remove();
+            $('body').append(modalHTML);
+            $('#testResultsModal').modal('show');
+        }
+
+        // ========================================
+        // EVENT HANDLERS & INITIALIZATION
+        // ========================================
+
+        $(document).ready(() => {
+            // Initialize components
+            initTinyMCE();
+            initMathField();
+
+            // Insert custom MathType templates
+            $(document).on('click', '.custom-math-btn', function () {
+                const latex = $(this).data('insert');
+                if (appState.mathFieldInstance) {
+                    appState.mathFieldInstance.insert(latex);
+                    appState.mathFieldInstance.focus();
+                }
+            });
+            // Arabic number button handlers
+            $(document).on('click', '.num-btn', function () {
+                const number = $(this).text();
+                if (appState.mathFieldInstance) {
+                    appState.mathFieldInstance.insert(number);
+                    appState.mathFieldInstance.focus();
+                }
+            });
+            $(document).on('click', '.arrow-btn', function () {
+                const number = $(this).text();
+                if (appState.mathFieldInstance) {
+                    appState.mathFieldInstance.insert(number);
+                    appState.mathFieldInstance.focus();
+                }
+            });
+
+            // Example badge handlers
+            $(document).on('click', '.example-latex', function () {
+                const latex = $(this).data('latex');
+                if (appState.mathFieldInstance) {
+                    appState.mathFieldInstance.value = latex;
+                    updateMathPreview(latex);
+                    $('#mathEditorModal').modal('show');
+                }
+            });
+
+            // Main action handlers
+            $('#insertMath').on('click', insertMath);
+            $('#showResult').on('click', showResult);
+            $('#clearEditor').on('click', clearEditor);
+            $('#testFunctions').on('click', testTranslateSymbols);
+
+            // Modal event handlers
+            $('#mathEditorModal').on('hidden.bs.modal', resetMathField);
+            $('#mathEditorModal').on('shown.bs.modal', moveKeyboardToModal);
+        });
+    </script>
+</body>
+
+</html>
