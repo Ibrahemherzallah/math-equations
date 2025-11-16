@@ -437,7 +437,7 @@
                         </div>
                         <div>
                             <button type="button" class="btn m-1 custom-math-btn flex-column"
-                                data-insert="{\placeholder{}} {\placeholder{}}">
+                                data-insert="{\placeholder{}} \ {\placeholder{}}">
                                 <img src="images/screenshot2.png">
                             </button>
                             <button type="button" class="btn  m-1 custom-math-btn flex-column"
@@ -450,21 +450,26 @@
     
                             </button>
 
+                                <button type="button" class="btn m-1 custom-math-btn flex-column"
+                                    data-insert="\begin{matrix}\placeholder{} \\ \hline \\ \placeholder{} | \quad \placeholder{}   \end{matrix}">
+                                    <img src='images/longDiv.png'>
+                                </button>
+
                             <!-- Long division -->
                             <button type="button" class="btn m-1 custom-math-btn"
-                                    data-insert="\longdiv{\placeholder{}}{\placeholder{}}">
-                                  <img src="images/longDiv.png">
+                                    data-insert="\begin{matrix}{\placeholder{}} \\ \hline \\ \placeholder{} & | & \begin{matrix}\placeholder{} \end{matrix}\end{matrix}">
+                                <img src="images/longDiv.png">
                             </button>
+
+
                             <button type="button" class="btn m-1 custom-math-btn"
-                                    data-insert="\longdiv{\placeholder{}}{\placeholder{}}">
+                                    data-insert="\left[ \begin{matrix} \placeholder{} \\ \placeholder{} \end{matrix} \right]">
                                   <img src="images/screenshot1.png">
                             </button>
-
-                                                        <button type="button" class="btn m-1 custom-math-btn"
-                                    data-insert="\longdiv{\placeholder{}}{\placeholder{}}">
-                                  <img src="images/screenshot3.png">
+                            <button type="button" class="btn m-1 custom-math-btn"
+                                    data-insert="\left[ \placeholder{} ,\ \placeholder{} \right]">
+                                <img src='images/screenshot3.png'>
                             </button>
-
                         </div>
                         
 
