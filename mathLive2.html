@@ -103,70 +103,72 @@
             text-align: right !important;
         }
 
-        mjx-math,
-        mjx-msubsup,
-        mjx-msub,
-        mjx-texatom,
-        mjx-munderover,
-        mjx-mover,
-        mjx-script,
-        mjx-mtr {
+        /* ===== تطبيق scaleX(-1) على العناصر العربية فقط ===== */
+        mjx-math.has-arabic,
+        mjx-math.has-arabic mjx-msubsup,
+        mjx-math.has-arabic mjx-msub,
+        mjx-math.has-arabic mjx-texatom,
+        mjx-math.has-arabic mjx-munderover,
+        mjx-math.has-arabic mjx-mover,
+        mjx-math.has-arabic mjx-script,
+        mjx-math.has-arabic mjx-mtr {
             display: inline-block;
             transform: scaleX(-1);
         }
 
-        mjx-mtr mjx-mtd,
-        mjx-mtr mjx-mtd mjx-mn,
-        mjx-mtr mjx-mtd mjx-mi {
+        mjx-math.has-arabic mjx-mtr mjx-mtd,
+        mjx-math.has-arabic mjx-mtr mjx-mtd mjx-mn,
+        mjx-math.has-arabic mjx-mtr mjx-mtd mjx-mi {
             transform: scaleX(1);
         }
 
-        mjx-math mjx-surd,
-        mjx-math mjx-mi,
-        mjx-math mjx-mn,
-        mjx-math mjx-mo,
-        mjx-math mjx-script mjx-c,
-        mjx-box mjx-msub mjx-script mjx-mn mjx-c,
-        mjx-script mjx-texatom mjx-msqrt mjx-sqrt mjx-box {
+        mjx-math.has-arabic mjx-surd,
+        mjx-math.has-arabic mjx-mi,
+        mjx-math.has-arabic mjx-mn,
+        mjx-math.has-arabic mjx-mo,
+        mjx-math.has-arabic mjx-script mjx-c,
+        mjx-box.has-arabic mjx-msub mjx-script mjx-mn mjx-c,
+        mjx-script.has-arabic mjx-texatom mjx-msqrt mjx-sqrt mjx-box {
             display: inline-block;
             transform: scaleX(-1);
         }
 
-        mjx-math mjx-msubsup mjx-texatom,
-        mjx-math mjx-msubsup mjx-mn mjx-c,
-        mjx-math mjx-munderover mjx-texatom,
-        mjx-math mjx-munderover mjx-mn mjx-c,
-        mjx-math mjx-script mjx-texatom mjx-msqrt mjx-surd,
-        mjx-math mjx-script mjx-texatom mjx-msqrt mjx-box mjx-mn,
-        mjx-math mjx-script mjx-texatom mjx-mn mjx-c {
+        mjx-math.has-arabic mjx-msubsup mjx-texatom,
+        mjx-math.has-arabic mjx-msubsup mjx-mn mjx-c,
+        mjx-math.has-arabic mjx-munderover mjx-texatom,
+        mjx-math.has-arabic mjx-munderover mjx-mn mjx-c,
+        mjx-math.has-arabic mjx-script mjx-texatom mjx-msqrt mjx-surd,
+        mjx-math.has-arabic mjx-script mjx-texatom mjx-msqrt mjx-box mjx-mn,
+        mjx-math.has-arabic mjx-script mjx-texatom mjx-mn mjx-c {
             display: inline-block;
             transform: none !important;
         }
 
-        mjx-math mjx-script mjx-script mjx-mn,
-        mjx-math mjx-mrow > mjx-mo {
-          transform: scaleX(1);
+        mjx-math.has-arabic mjx-script mjx-script mjx-mn,
+        mjx-math.has-arabic mjx-mrow>mjx-mo {
+            transform: scaleX(1);
         }
 
-        mjx-itable mjx-mtr mjx-mtd mjx-tstrut {
-          display: none;
+        mjx-itable.has-arabic mjx-mtr mjx-mtd mjx-tstrut {
+            display: none;
         }
 
-        mjx-itable mjx-mtr mjx-mtd {
-          width: 3rem;
+        mjx-itable.has-arabic mjx-mtr mjx-mtd {
+            width: 3rem;
         }
 
-        mjx-mfrac mjx-frac mjx-den {
-          font-size: 2rem;
-        } 
-
-        mjx-mfrac mjx-frac mjx-num {
-          padding-bottom: 0.2em !important;
+        mjx-mfrac.has-arabic mjx-frac mjx-den {
+            font-size: 2rem;
         }
+
+        mjx-mfrac.has-arabic mjx-frac mjx-num {
+            padding-bottom: 0.2em !important;
+        }
+
         .arrow-btn {
-          position: relative;
-          font-size: 18px;
-          padding: 8px 16px;
+            position: relative;
+            font-size: 18px;
+            padding: 8px 16px;
         }
 
         /* ===== Preview & Result Display ===== */
@@ -311,12 +313,14 @@
             z-index: 10051 !important;
             position: fixed !important;
         }
+
         .ML__placeholder {
             border: 1px solid #aaa;
             padding: 2px 6px;
             margin: 0 2px;
             border-radius: 4px;
         }
+
         /* ===== Responsive ===== */
         @media (max-width: 768px) {
             .card-header h3 {
@@ -445,33 +449,33 @@
                                 <img src="images/screenshot4.png">
                             </button>
                             <button type="button" class="btn m-1 custom-math-btn flex-column"
-                              data-insert="\begin{matrix}\placeholder{} \\ + \placeholder{} \\ \hline \\ \placeholder{}\end{matrix}">
-                              <img src="images/image.png">
-    
+                                data-insert="\begin{matrix}\placeholder{} \\ + \placeholder{} \\ \hline \\ \placeholder{}\end{matrix}">
+                                <img src="images/image.png">
+
                             </button>
 
-                                <button type="button" class="btn m-1 custom-math-btn flex-column"
-                                    data-insert="\begin{matrix}\placeholder{} \\ \hline \\ \placeholder{} | \quad \placeholder{}   \end{matrix}">
-                                    <img src='images/longDiv.png'>
-                                </button>
+                            <button type="button" class="btn m-1 custom-math-btn flex-column"
+                                data-insert="\begin{matrix}\placeholder{} \\ \hline \\ \placeholder{} | \quad \placeholder{}   \end{matrix}">
+                                <img src='images/longDiv.png'>
+                            </button>
 
                             <!-- Long division -->
                             <button type="button" class="btn m-1 custom-math-btn"
-                                    data-insert="\begin{matrix}{\placeholder{}} \\ \hline \\ \placeholder{} & | & \begin{matrix}\placeholder{} \end{matrix}\end{matrix}">
+                                data-insert="\begin{matrix}{\placeholder{}} \\ \hline \\ \placeholder{} & | & \begin{matrix}\placeholder{} \end{matrix}\end{matrix}">
                                 <img src="images/longDiv.png">
                             </button>
 
 
                             <button type="button" class="btn m-1 custom-math-btn"
-                                    data-insert="\left[ \begin{matrix} \placeholder{} \\ \placeholder{} \end{matrix} \right]">
-                                  <img src="images/screenshot1.png">
+                                data-insert="\left[ \begin{matrix} \placeholder{} \\ \placeholder{} \end{matrix} \right]">
+                                <img src="images/screenshot1.png">
                             </button>
                             <button type="button" class="btn m-1 custom-math-btn"
-                                    data-insert="\left[ \placeholder{} ,\ \placeholder{} \right]">
+                                data-insert="\left[ \placeholder{} ,\ \placeholder{} \right]">
                                 <img src='images/screenshot3.png'>
                             </button>
                         </div>
-                        
+
 
                     </div>
 
@@ -517,7 +521,10 @@
                 'csc': 'قتا',
                 'cot': 'ظتا',
                 'lim': 'نها',
-            }
+            },
+            // REGEX للتفريق بين العربي والإنجليزي
+            ARABIC_REGEX: /[\u0600-\u06FF]/,
+            ENGLISH_REGEX: /[a-zA-Z0-9]/
         };
 
         // ===== Global State =====
@@ -592,6 +599,40 @@
         }
 
         // ========================================
+        // HELPER FUNCTION: CHECK IF TEXT HAS ARABIC
+        // ========================================
+
+        /**
+         * تفحص إذا كان النص يحتوي على حروف عربية
+         * @param {string} text - النص المراد فحصه
+         * @returns {boolean} true إذا كان فيه عربي
+         */
+        function hasArabic(text) {
+            return CONFIG.ARABIC_REGEX.test(text);
+        }
+
+        /**
+         * إضافة class "has-arabic" لعناصر MathJax التي تحتوي على نصوص عربية
+         * @param {HTMLElement} container - الـ container اللي نمسح عناصره
+         */
+        function addArabicClassToMathElements(container) {
+            const mathElements = container.querySelectorAll('mjx-math, mjx-container, mjx-mtext, mjx-mi, mjx-mn');
+
+            mathElements.forEach(element => {
+                const text = element.textContent || '';
+
+                if (hasArabic(text)) {
+                    element.classList.add('has-arabic');
+
+                    let parent = element.closest('mjx-math');
+                    if (parent) {
+                        parent.classList.add('has-arabic');
+                    }
+                }
+            });
+        }
+
+        // ========================================
         // TRANSLATION & CONVERSION FUNCTIONS
         // ========================================
 
@@ -605,13 +646,11 @@
 
             let result = latex;
 
-            // Handle log_10 and ln_10 first
             result = result.replace(/\blog_(\d+)\b/g, 'لو_{$1}');
             result = result.replace(/\blog_\{(\d+)\}/g, 'لو_{$1}');
             result = result.replace(/\bln_(\d+)\b/g, 'لن_{$1}');
             result = result.replace(/\bln_\{(\d+)\}/g, 'لن_{$1}');
 
-            // Translate other functions
             for (const [eng, ar] of Object.entries(CONFIG.TRANSLATIONS)) {
                 if (!['log', 'ln'].includes(eng)) {
                     result = result.replace(new RegExp(`\\\\?\\b${eng}\\b`, 'g'), ar);
@@ -644,7 +683,9 @@
                 const translated = translateMathSymbols(latex);
                 preview.innerHTML = `\\[${translated}\\]`;
                 if (window.MathJax) {
-                    MathJax.typesetPromise([preview]).catch(err => console.log(err));
+                    MathJax.typesetPromise([preview]).then(() => {
+                        addArabicClassToMathElements(preview);
+                    }).catch(err => console.log(err));
                 }
             } else {
                 preview.innerHTML = '<span class="text-muted">المعاينة ستظهر هنا...</span>';
@@ -696,7 +737,6 @@
         function insertMath() {
             let latex = appState.mathFieldInstance ? appState.mathFieldInstance.value.trim() : '';
 
-            // Remove extra backslashes
             latex = latex.replace(/^\\+(sin|cos|tan|cot|sec|csc|log|ln|lim|جا|جتا|ظا|ظتا|لو|لن|نها|قا|قتا)\b/i, '$1');
 
             if (!latex || !appState.currentEditor) return;
@@ -716,26 +756,21 @@
          */
         function generateMathHTML(latex) {
             const translations = CONFIG.TRANSLATIONS;
-            // Pattern that doesn't match log_10 or ln_10 (using negative lookahead)
             const mathFuncPattern = /^(\\)?(sin|cos|tan|cot|sec|csc|log|ln|lim)(?!_\d)(?!_\{)(?!\})\s*\(?(.+)/i;
 
-            // ===== Handle log/ln with base FIRST: log_10 or log_10 x =====
             const logBaseMatch = latex.match(/^\\?(log|ln|لو|لن)_\{?([^}]+)\}?(?:\s*(.+))?$/i);
             if (logBaseMatch && logBaseMatch[2]) {
                 const funcRaw = logBaseMatch[1].toLowerCase();
                 const base = logBaseMatch[2].trim();
                 const argument = logBaseMatch[3];
 
-                // Normalize to Arabic function name
                 const arabicFunc = (funcRaw === 'ln' || funcRaw === 'لن') ? 'لن' : 'لو';
 
-                // لا نترجم الـ base إذا كانت فيها رموز خاصة
                 let translatedBase = base;
                 if (!base.includes('\\')) {
                     translatedBase = translateMathSymbols(base);
                 }
 
-                // If there's an argument (e.g. log_10(x) or لو_10 (x) or log_10 x)
                 if (argument && argument.trim()) {
                     let arg = argument.trim();
                     if (arg.startsWith('(') && arg.endsWith(')')) {
@@ -744,26 +779,22 @@
                     const translatedArg = translateMathSymbols(arg);
                     return `${arabicFunc}<sub><span data-latex="\\(${escapeHtml(translatedBase)}\\)">\\(${translatedBase}\\)</span></sub> (<span data-latex="\\(${escapeHtml(translatedArg)}\\)">\\(${translatedArg}\\)</span>)`;
                 } else {
-                    // No argument: return with LaTeX delimiters in subscript
                     return `<p>${arabicFunc}<sub><span data-latex="\\(${escapeHtml(translatedBase)}\\)">\\(${translatedBase}\\)</span></sub></p>`;
                 }
 
             }
 
-            // ===== Handle lim with subscript FIRST: lim_{x+2} =====
             const limMatch = latex.match(/^\\?(lim|نها)_\{?([^}]+)\}?(?:\s*(.+))?$/i);
             if (limMatch && limMatch[2]) {
                 const base = limMatch[2].trim();
                 const argument = limMatch[3];
                 const arabicFunc = 'نها';
 
-                // لا نترجم الـ base إذا كانت فيها رموز خاصة (مثل \to، \rightarrow)
                 let translatedBase = base;
                 if (!base.includes('\\')) {
                     translatedBase = translateMathSymbols(base);
                 }
 
-                // If there's an argument after the subscript
                 if (argument && argument.trim()) {
                     let arg = argument.trim();
                     if (arg.startsWith('(') && arg.endsWith(')')) {
@@ -772,39 +803,30 @@
                     const translatedArg = translateMathSymbols(arg);
                     return `${arabicFunc}<sub><span data-latex="\\(${escapeHtml(translatedBase)}\\)">\\(${translatedBase}\\)</span></sub> (<span data-latex="\\(${escapeHtml(translatedArg)}\\)">\\(${translatedArg}\\)</span>)`;
                 } else {
-                    // No argument: return with LaTeX delimiters in subscript
                     return `<p>${arabicFunc}<sub><span data-latex="\\(${escapeHtml(translatedBase)}\\)">\\(${translatedBase}\\)</span></sub></p>`;
                 }
             }
 
-            // ===== Check if input starts with a math function (but NOT log_10/ln_10/lim_) =====
             const funcMatch = latex.match(mathFuncPattern);
             if (funcMatch) {
                 const func = funcMatch[2].toLowerCase();
                 let argument = funcMatch[3].trim();
 
-                // Remove closing parenthesis if the argument was wrapped in ()
                 if (argument.startsWith('(') && argument.endsWith(')')) {
                     argument = argument.slice(1, -1).trim();
                 }
 
                 const arabicFunc = translations[func] || func;
 
-                // If argument is empty, just return the function
                 if (!argument) {
                     return `${arabicFunc}`;
                 }
 
-                // Translate the argument
                 const translatedArg = translateMathSymbols(argument);
 
-                // Return: Arabic function + space + wrapped argument with styling + parentheses
                 return `${arabicFunc} (<span data-latex="\\(${escapeHtml(translatedArg)}\\)">\\(${translatedArg}\\)</span>)`;
             }
 
-            // ===== Handle other patterns with power =====
-
-            // Power with parentheses: x^2(y+1)
             const powerParenMatch = latex.match(/^(.+?)\s*\^\s*\{?(\d+)\}?\s*\(\s*(.+)\s*\)$/);
             if (powerParenMatch) {
                 const base = powerParenMatch[1];
@@ -814,7 +836,6 @@
                 return `<span data-latex="\\(${escapeHtml(base)}\\)">\\(${base}\\)</span><sup>${power}</sup><span data-latex="\\(${escapeHtml(translatedArg)}\\)">\\(${translatedArg}\\)</span>`;
             }
 
-            // ===== Default case: wrap entire expression in LaTeX =====
             const translatedLatex = translateMathSymbols(latex);
             const hasDelimiters = translatedLatex.startsWith('\\(') || translatedLatex.includes('\\(');
 
@@ -823,33 +844,6 @@
             } else {
                 return `<span data-latex="${escapeHtml(translatedLatex)}">\\(${translatedLatex}\\)</span>`;
             }
-        }
-
-        /**
-         * Generate HTML for logarithm with base
-         * @param {string} latex - LaTeX expression
-         * @returns {string} Generated HTML
-         */
-        function generateLogWithBase(latex) {
-            let base = '';
-            let func = '';
-
-            if (/^log_(\d+)$/.test(latex)) {
-                base = latex.match(/^log_(\d+)$/)[1];
-                func = 'لو';
-            } else if (/^log_\{(\d+)\}$/.test(latex)) {
-                base = latex.match(/^log_\{(\d+)\}$/)[1];
-                func = 'لو';
-            } else if (/^ln_(\d+)$/.test(latex)) {
-                base = latex.match(/^ln_(\d+)$/)[1];
-                func = 'لن';
-            } else if (/^ln_\{(\d+)\}$/.test(latex)) {
-                base = latex.match(/^ln_\{(\d+)\}$/)[1];
-                func = 'لن';
-            }
-
-            // النتيجة نص عادي بدون أي span أو styling - مثل جا و جتا تماماً
-            return `${func}<sub>${base}</sub>`;
         }
 
         /**
@@ -866,7 +860,9 @@
             resultDiv.innerHTML = translatedContent;
 
             if (window.MathJax) {
-                MathJax.typesetPromise([resultDiv]).catch(err => console.log(err));
+                MathJax.typesetPromise([resultDiv]).then(() => {
+                    addArabicClassToMathElements(resultDiv);
+                }).catch(err => console.log(err));
             }
         }
 
@@ -931,8 +927,6 @@
 
         /**
          * Evaluate Test Case
-         * @param {string} input - Input expression
-         * @returns {string} Result
          */
         function evaluateTestCase(input) {
             const translations = CONFIG.TRANSLATIONS;
@@ -964,9 +958,6 @@
 
         /**
          * Display Test Results Modal
-         * @param {string} resultsHTML - Results table HTML
-         * @param {number} passCount - Number of passing tests
-         * @param {number} totalCount - Total number of tests
          */
         function displayTestResults(resultsHTML, passCount, totalCount) {
             const failCount = totalCount - passCount;
@@ -1015,11 +1006,9 @@
         // ========================================
 
         $(document).ready(() => {
-            // Initialize components
             initTinyMCE();
             initMathField();
 
-            // Insert custom MathType templates
             $(document).on('click', '.custom-math-btn', function () {
                 const latex = $(this).data('insert');
                 if (appState.mathFieldInstance) {
@@ -1027,7 +1016,7 @@
                     appState.mathFieldInstance.focus();
                 }
             });
-            // Arabic number button handlers
+
             $(document).on('click', '.num-btn', function () {
                 const number = $(this).text();
                 if (appState.mathFieldInstance) {
@@ -1035,6 +1024,7 @@
                     appState.mathFieldInstance.focus();
                 }
             });
+
             $(document).on('click', '.arrow-btn', function () {
                 const number = $(this).text();
                 if (appState.mathFieldInstance) {
@@ -1043,7 +1033,6 @@
                 }
             });
 
-            // Example badge handlers
             $(document).on('click', '.example-latex', function () {
                 const latex = $(this).data('latex');
                 if (appState.mathFieldInstance) {
@@ -1053,13 +1042,11 @@
                 }
             });
 
-            // Main action handlers
             $('#insertMath').on('click', insertMath);
             $('#showResult').on('click', showResult);
             $('#clearEditor').on('click', clearEditor);
             $('#testFunctions').on('click', testTranslateSymbols);
 
-            // Modal event handlers
             $('#mathEditorModal').on('hidden.bs.modal', resetMathField);
             $('#mathEditorModal').on('shown.bs.modal', moveKeyboardToModal);
         });
